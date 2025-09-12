@@ -1,0 +1,42 @@
+# ------------------------
+# Virtual environment
+# ------------------------
+venv/
+.env/
+.env.*
+
+# ------------------------
+# Python cache
+# ------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ------------------------
+# IDE / Editor
+# ------------------------
+# VSCode
+.vscode/
+# PyCharm
+.idea/
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+# Jupyter
+.ipynb_checkpoints
+
+# ------------------------
+# Logs
+# ------------------------
+*.log
+
+# ------------------------
+# OS-specific files
+# ------------------------
+.DS_Store
+Thumbs.db
+
+# ------------------------
+# Misc
+# ------------------------
+*.pytest_cache/
