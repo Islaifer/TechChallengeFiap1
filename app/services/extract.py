@@ -13,24 +13,27 @@ def url_status(base_url) -> str:
     page_request = requests.get(base_url)
 
     if page_request.status_code == 200:
-        print("Conexão concluída com sucess. Cod:{page_request.status_code}")
+        pass
     else: 
-        print("Erro ao conectar com a api. Cod: {page_request.status_code} {page_request.reason}")
+        exit()
+    
+    return page_request
 
 def html_parser(base_url: str, page_url: str) -> list:
     """
     função para extrair as informações dos livros e gravar em uma lista de dicts
     """
-    
 
+    resultado = []
+    
     for page in range(1,51):
         
         url = base_url if page==1 else page_url.format(page)
 
-        page_request = requests.get(url=url)
+        page_request = url_status(url)
         
         if page_request.status_code != 200:
-            print("Erro na página: {page}")
+            print(f"Erro na página: {page}")
             continue
 
         soup = BeautifulSoup(page_request.text, 'html.parser')
@@ -39,10 +42,10 @@ def html_parser(base_url: str, page_url: str) -> list:
         livros = soup.find_all('article', class_='product_pod')
 
         for livro in livros:
-            titulo = livro.h3.a['title']
-            preco = livro.find('p', class_='price_color').text
-            disponibilidade = livro.find('p', class_='instock availability')
-            imagem_url = livro.find('div', class_='image_container').a.img['src']
+            titulo = livro.find('h3').find('a')['title']
+            preco = livro.find('div', class_='product_price').find('p', class_='price_color').text
+            disponibilidade = livro.find('div', class_='product_price').find('p', class_='instock availability').get_text(strip=True)
+            imagem_url = livro.find('div', class_='image_container').find('a').find('img', class_='thumbnail')['src']
             # como pegar a qtd de estrelas?
             # onde encontrar a categoria?
 
@@ -55,4 +58,10 @@ def html_parser(base_url: str, page_url: str) -> list:
                 # categoria
             }
 
-            livros.append(livro_dict)
+            resultado.append(livro_dict)
+    
+    return resultado
+
+resultado = html_parser(base_url, page_url)
+
+print(resultado[0])
