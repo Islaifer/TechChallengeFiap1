@@ -2,7 +2,10 @@
 name = "techchallengefiap1"
 version = "0.1.0"
 description = ""
-authors = ["Matheus Andrade <matheusroberto.alvesandrade1@gmail.com>"]
+authors = [
+	"Matheus Andrade <matheusroberto.alvesandrade1@gmail.com>",
+	"Adryen Simoes <adryen.simoes@outlook.com>"
+]
 readme = "README.md"
 
 [tool.poetry.dependencies]
