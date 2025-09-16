@@ -1,8 +1,11 @@
 [tool.poetry]
-name = "techchallengefiap1"
+name = "app"
 version = "0.1.0"
 description = ""
-authors = ["Matheus Andrade <matheusroberto.alvesandrade1@gmail.com>"]
+authors = [
+	"Matheus Andrade <matheusroberto.alvesandrade1@gmail.com>",
+	"Adryen Simoes <adryen.simoes@outlook.com>"
+]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -12,8 +15,13 @@ psycopg2 = "^2.9.10"
 requests = "^2.32.5"
 psycopg2-binary = "^2.9.10"
 redis = "^6.4.0"
-pydantic = "^2.11.9"
+pydantic = {extras = ["email"], version = "^2.11.9"}
 beautifulsoup4 = "^4.13.5"
+sqlalchemy = "^2.0.43"
+python-jose = {extras = ["cryptography"], version = "^3.5.0"}
+pymysql = "^1.1.2"
+uvicorn = "^0.35.0"
+bcrypt = "^4.3.0"
 
 
 [build-system]
