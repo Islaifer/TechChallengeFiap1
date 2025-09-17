@@ -6,7 +6,7 @@ class UserDto(BaseModel):
     id: int = Field(0)
     name: Optional[str] = Field(None, min_length=3, max_length=50)
     email: Optional[EmailStr] = Field(None, min_length=3, max_length=80)
-    password: str = Field(..., min_length=8, max_length=16)
+    password: Optional[str] = Field(None, min_length=8, max_length=16)
     
     def to_entity(self):
         user = User()

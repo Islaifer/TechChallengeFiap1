@@ -6,7 +6,7 @@ from app.models.dtos.user_dto import UserDto
 
 def create_access_token(data: UserDto, expires_delta: timedelta | None = None):
     expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
-    data_to_encode = {"sub": data.id, "exp": expire}
+    data_to_encode = {"sub": str(data.id), "exp": expire}
     
     token = jwt.encode(data_to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return token
