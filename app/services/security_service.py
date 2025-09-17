@@ -1,5 +1,7 @@
 import bcrypt
-from fastapi import HTTPException, status
+from fastapi import Request, HTTPException, status
+from typing import Optional
+from functools import wraps
 from app.security.jwt_provider import create_access_token, verify_token
 from app.repositories.user_repository import UserRepository
 from app.models.dtos.user_dto import UserDto
@@ -25,6 +27,7 @@ class SecurityService:
                 detail="User or email with password combination does not exists"
                 )
         
+        user.id = user_entity.id
         return create_access_token(user)
     
     def register(self, user: UserDto):
@@ -44,8 +47,21 @@ class SecurityService:
         return hashed_pass.decode("utf-8")
     
     def validate_token(self, token: str):
+        if not token:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token"
+                )
+        
         id = verify_token(token)
         user: User = self.user_repository.find_by_id(id)
+        
+        if not user:
+            print(f"id collected: {id}")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid user"
+                )
         
         user_dto = UserDto()
         user_dto.from_entity(user)
@@ -77,5 +93,37 @@ class SecurityService:
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Already exist a user with this email",
         )
-        
+            
+        if user.password is None:
+            raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password must exist",
+        )
         return
+    
+    def authorize(self, target: Optional[str] = None):
+        def decorator(func):
+            @wraps(func)
+            async def wrapper(*args, **kwargs):
+                request: Request = kwargs.get("request")
+                if not request:
+                    for arg in args:
+                        if isinstance(arg, Request):
+                            request = arg
+                            break
+                    
+                if not request:
+                    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Request object not found")
+                    
+                auth_header = request.headers.get("Authorization")
+                token = None
+                if auth_header and auth_header.startswith("Bearer "):
+                    token = auth_header.split("Bearer ")[1]
+                    
+                user: UserDto = self.validate_token(token)
+                if target:
+                    kwargs[target] = user
+                    
+                return await func(*args, **kwargs)
+            return wrapper
+        return decorator
