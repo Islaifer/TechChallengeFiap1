@@ -12,7 +12,8 @@ def page_request(base_url: str) -> str:
     if page_request.status_code == 200:
         pass
     else: 
-        exit()
+        HTTP_error = page_request.status_code
+        print(f"Erro na requisição: {HTTP_error}")
     
     return page_request
 
@@ -43,10 +44,10 @@ def page_amount(base_url: str) -> int:
     
     soup = bs4_obj(response.text)
     
-    page_amount_text = soup.find('li', class_='current').get_text(strip=True)
+    page_slicer = soup.find('li', class_='current')
 
-    if page_amount_text:
-        page_amount_int = int(page_amount_text.split()[-1])
+    if page_slicer:
+        page_amount_int = int(page_slicer.get_text(strip=True).split()[-1])
     else:
         page_amount_int = 1
     
@@ -87,12 +88,3 @@ def html_parser(html_response: str) -> dict:
         livros.append(livro_dict)
     
     return livros
-
-
-
-if __name__=='__main__':
-    base_url = "https://books.toscrape.com/"
-    page_url = "https://books.toscrape.com/catalogue/page-{}.html"
-
-    pg = page_amount(base_url)
-    print(pg)
