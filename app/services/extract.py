@@ -48,11 +48,4 @@ for item in lista_categorias:
                 {**livro, 'categoria': item['categoria']} for livro in livros
             ])
     
-    
-
     print(f"Categoria {item['categoria']} finalizada.")
-
-print(todos_livros[:5])
-
-if __name__ == '__main__':
-    print(base_url+item['url'] for item in lista_categorias)
