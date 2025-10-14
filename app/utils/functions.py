@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import json
 
 def page_request(base_url: str) -> str:
     """
@@ -88,3 +89,38 @@ def html_parser(html_response: str) -> dict:
         livros.append(livro_dict)
     
     return livros
+
+def json_text(data: dict) -> str:
+    """
+    Função para converter um dicionário em um objeto JSON.
+
+    Args: data (dict): Dicionário a ser convertido em JSON
+
+    Returns: JSON: Objeto JSON
+    """
+    json_data = json.dumps(data, indent=4, ensure_ascii=False)
+    
+    return json_data
+
+def save_json_file(data: str, filename: str) -> None:
+    """
+    Função para salvar um dicionário em um arquivo JSON.
+
+    Args: data (str): Dicionário a ser salvo em JSON, no formato string, pela função json_text
+          filename (str): Nome do arquivo JSON
+    """
+    with open(filename, 'w', encoding='utf-8') as json_file:
+        json_file.write(data)
+
+def read_json_file(filename: str) -> dict:
+    """
+    Função para ler um arquivo JSON e retornar um dicionário.
+
+    Args: filename (str): Nome do arquivo JSON
+
+    Returns: dict: Dicionário com os dados do arquivo JSON
+    """
+    with open(filename, 'r', encoding='utf-8') as json_file:
+        data = json.load(json_file)
+    
+    return data

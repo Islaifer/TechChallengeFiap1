@@ -1,4 +1,4 @@
-from app.utils.functions import page_request, bs4_obj, html_parser, page_amount
+from app.utils.functions import page_request, bs4_obj, html_parser, page_amount, json_text, save_json_file
 
 base_url = "https://books.toscrape.com/"
 
@@ -49,3 +49,7 @@ for item in lista_categorias:
             ])
     
     print(f"Categoria {item['categoria']} finalizada.")
+
+json_str = json_text(todos_livros)
+
+save_json = save_json_file(data=json_str, filename='app/data/books.json')
