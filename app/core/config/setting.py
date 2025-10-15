@@ -12,8 +12,11 @@ DB_HOST = os.getenv("DB_HOST", "localhost")
 DB_PORT = os.getenv("DB_PORT", "3306")
 DB_NAME = os.getenv("DB_NAME", "mydb")
 DB_CONNECTOR = os.getenv("DB_CONNECTOR", "psycopg2") #pymysql ou psycopg2
+REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+REDIS_PORT = os.getenv("REDIS_PORT", "6379")
 
 DATABASE_URL = f"{DB_TYPE}+{DB_CONNECTOR}://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+REDIS_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}"
 
 
 SECRET_KEY = os.getenv("JWT_SECRET_KEY", "12345678901234567890")
