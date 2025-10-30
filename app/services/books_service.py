@@ -5,11 +5,11 @@ class BooksService:
         self.redis_service = redis_service
         
     def get_all_books(self):
-        books = self.redis_service.get_all("BOOKS")
+        books = self.redis_service.get_all("books")
         return books
     
     def get_by_id(self, book_id):
-        book = self.redis_service.get_value("BOOKS", book_id)
+        book = self.redis_service.get_value("books", book_id)
         return book
     
     def filter_books(self, title: str, category: str):
@@ -18,5 +18,5 @@ class BooksService:
         return result
     
     def get_all_categories(self):
-        all_categories = self.redis_service.get_all("CATEGORIES")
+        all_categories = self.redis_service.get_all("category_list")
         return all_categories
