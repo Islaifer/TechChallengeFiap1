@@ -4,7 +4,7 @@ import datetime
 
 # Criar uma classe com esse código com dependência de RedisService
 # Salvar as categorias separadas com o método save do RedisService 
-# pro endpoint de livros por categoria
+# pro endpoint de livros por category
 # Salvar com campo de data da atualização 
 
 class ExtractService:
@@ -21,10 +21,10 @@ class ExtractService:
         lista_categorias = []
         
         for li in categorias.find('ul').find('li').find('ul').find_all('li'):
-            categoria = li.get_text(strip=True)
+            category = li.get_text(strip=True)
             url = li.find('a')['href']
             dicionario = {
-                'categoria': categoria,
+                'category': category,
                 'url': url
             }
 
@@ -43,13 +43,13 @@ class ExtractService:
                 response = page_request(item_full_url)
                 livros = html_parser(response.text)
                 todos_livros.extend([
-                    {**livro, 'categoria': item['categoria']} for livro in livros
+                    {**livro, 'category': item['category']} for livro in livros
                 ])
             else:
                 response = page_request(item_full_url)
                 livros = html_parser(response.text)
                 todos_livros.extend([
-                    {**livro, 'categoria': item['categoria']} for livro in livros
+                    {**livro, 'category': item['category']} for livro in livros
                 ])
                 
                 for page in range(2, page_amt+1):
@@ -57,10 +57,10 @@ class ExtractService:
                     response = page_request(page_url)
                     livros = html_parser(response.text)
                     todos_livros.extend([
-                        {**livro, 'categoria': item['categoria']} for livro in livros
+                        {**livro, 'category': item['category']} for livro in livros
                     ])
             
-            print(f"Categoria {item['categoria']} finalizada.")
+            print(f"Categoria {item['category']} finalizada.")
 
         json_str = json_text(todos_livros)
 
