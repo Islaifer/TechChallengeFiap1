@@ -90,7 +90,8 @@ Response Body:
     "price": 0,
     "availability": "string",
     "image_url": "string",
-    "rating": "string"
+    "rating": "string",
+    "last_updated": "string"
   }
 ]
 ```
@@ -116,7 +117,8 @@ Response Body:
   "price": 0,
   "availability": "string",
   "image_url": "string",
-  "rating": "string"
+  "rating": "string",
+  "last_updated": "string"
 }
 ```
 Descrição: Essa rota é uma rota protegida que serve para buscar um livro específico na base de dados obtidido pelo scrapping através do id dele.
@@ -143,7 +145,8 @@ Response Body:
     "price": 0,
     "availability": "string",
     "image_url": "string",
-    "rating": "string"
+    "rating": "string",
+    "last_updated": "string"
   }
 ]
 ```

@@ -9,6 +9,7 @@ class BookDto(BaseModel):
     availability: Optional[str] = Field(None)
     image_url: Optional[str] = Field(None)
     rating: Optional[str] = Field(None)
+    last_updated: Optional[str] = Field(None)
     
     def from_json(self, json_obj):
         self.id = json_obj['id']
@@ -18,5 +19,6 @@ class BookDto(BaseModel):
         self.availability = json_obj['availability']
         self.image_url = json_obj['image_url']
         self.rating = json_obj['rating']
+        self.last_updated = json_obj['last_updated']
         
     
