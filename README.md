@@ -150,7 +150,7 @@ Response Body:
   }
 ]
 ```
-Descrição: Essa rota é uma rota protegida que serve para buscar os livros obtidios pelo scrapping, filtrando pelo nome e pela categoria.
+Descrição: Essa rota é uma rota protegida que serve para buscar os livros obtidos pelo scrapping, filtrando pelo nome e pela categoria.
 
 #### /api/v1/categories
 Verbo http: GET
