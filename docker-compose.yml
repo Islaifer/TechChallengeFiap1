@@ -27,6 +27,7 @@ services:
       DB_PORT: 3306
       DB_NAME: TESTE_PYTHON
       DB_CONNECTOR: pymysql
+      JWT_SECRET_KEY: 7s0RscNkUzc0Pugmj8rjPcgeyl1U7IjihSh0DNqNrtc=
     volumes:
       - .:/app
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
