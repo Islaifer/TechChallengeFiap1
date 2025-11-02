@@ -30,7 +30,7 @@ services:
       - key: JWT_SECRET_KEY
         value: 7s0RscNkUzc0Pugmj8rjPcgeyl1U7IjihSh0DNqNrtc=
 
-   - type: pserv
+  - type: pserv
     name: mariadb
     env: docker
     plan: free
