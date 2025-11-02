@@ -30,12 +30,11 @@ services:
       - key: JWT_SECRET_KEY
         value: 7s0RscNkUzc0Pugmj8rjPcgeyl1U7IjihSh0DNqNrtc=
 
-  - type: pserv
+   - type: pserv
     name: mariadb
-    env: linux
+    env: docker
     plan: free
-    runtime: docker
-    image: mariadb:11
+    dockerfilePath: ./mariadb.Dockerfile
     envVars:
       - key: MARIADB_ROOT_PASSWORD
         value: HardPass@1234
