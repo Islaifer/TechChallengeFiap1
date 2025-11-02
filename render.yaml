@@ -1,5 +1,4 @@
 services:
-  # Serviço da API FastAPI
   - type: web
     name: fastapi-app
     env: docker
@@ -12,7 +11,7 @@ services:
         fromService:
           name: redis
       - key: REDIS_PORT
-        value: 6379
+        value: "6379"
       - key: DB_TYPE
         value: mariadb
       - key: DB_USER
@@ -23,7 +22,7 @@ services:
         fromService:
           name: mariadb
       - key: DB_PORT
-        value: 3306
+        value: "3306"
       - key: DB_NAME
         value: TESTE_PYTHON
       - key: DB_CONNECTOR
@@ -31,7 +30,6 @@ services:
       - key: JWT_SECRET_KEY
         value: 7s0RscNkUzc0Pugmj8rjPcgeyl1U7IjihSh0DNqNrtc=
 
-  # Banco MariaDB
   - type: pserv
     name: mariadb
     env: linux
@@ -52,7 +50,6 @@ services:
       mountPath: /var/lib/mysql
       sizeGB: 1
 
-  # Redis
   - type: redis
     name: redis
-    plan: 
+    plan: free
