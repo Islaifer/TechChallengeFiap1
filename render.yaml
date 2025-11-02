@@ -40,7 +40,7 @@ services:
     env: docker
     plan: free
     dockerfilePath: ""
-    image: mariadb:11
+    dockerImage: mariadb:11
     envVars:
       - key: MARIADB_ROOT_PASSWORD
         value: HardPass@1234
