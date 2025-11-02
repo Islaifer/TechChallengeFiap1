@@ -1,16 +1,16 @@
 services:
-  # Serviço da API FastAPI
+  # Servi�o da API FastAPI
   - type: web
     name: fastapi-app
     env: docker
     plan: free
     branch: main
     dockerfilePath: ./Dockerfile
+    autoDeploy: true
     envVars:
       - key: REDIS_HOST
         fromService:
           name: redis
-          type: redis
       - key: REDIS_PORT
         value: 6379
       - key: DB_TYPE
@@ -22,7 +22,6 @@ services:
       - key: DB_HOST
         fromService:
           name: mariadb
-          type: pserv
       - key: DB_PORT
         value: 3306
       - key: DB_NAME
@@ -31,16 +30,14 @@ services:
         value: pymysql
       - key: JWT_SECRET_KEY
         value: 7s0RscNkUzc0Pugmj8rjPcgeyl1U7IjihSh0DNqNrtc=
-    # Porta que o Render expõe automaticamente
-    autoDeploy: true
 
   # Banco MariaDB
   - type: pserv
     name: mariadb
-    env: docker
+    env: linux
     plan: free
-    dockerfilePath: ""
-    image: mariadb
+    runtime: docker
+    image: mariadb:11
     envVars:
       - key: MARIADB_ROOT_PASSWORD
         value: HardPass@1234
@@ -58,4 +55,4 @@ services:
   # Redis
   - type: redis
     name: redis
-    plan: free
+    plan: 
