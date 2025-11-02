@@ -12,7 +12,7 @@ Este projeto representa o Tech Challenge 1 da FIAP para o curso de Machine Learn
 O objetivo do projeto é fazer um web scrapping do site https://books.toscrape.com/, que é um site que disponibiliza dados para prática de web scrapping. Após o scrapping, disponibilizar endpoints para disponibilizar os dados coletados.
 
 ## Como usar
-A API estará disponível no host {colocar o host quando subirmos no ambiente deployadinho}
+A API estará disponível no host https://techchallengefiap1-production.up.railway.app
 Para usar, basta criar uma conta com o endpoint de registro, fazer login com os dados registrados, e por fim, utilizar os endpoints de serviço passando o token jwt no header como Authorization Bearer.
 
 ### Documentação da API
@@ -317,6 +317,8 @@ Dê permissão de execução ao script e o execute:
 Para rodar sem docker, primeiro configure as variáveis de ambiente:
 - REDIS_HOST: host_do_redis
 - REDIS_PORT: porta_do_redis
+- REDIS_PASS: senha_do_redis #opcional
+- REDIS_USER: usuario_do_redis #opcional
 - DB_TYPE: tipo_do_banco #postgresql ou mariadb
 - DB_USER: usuario_do_banco
 - DB_PASS: senha_do_banco
