@@ -10,6 +10,8 @@ services:
       - key: REDIS_HOST
         fromService:
           name: redis
+          type: redis
+          envVarKey: REDIS_HOST
       - key: REDIS_PORT
         value: "6379"
       - key: DB_TYPE
@@ -21,6 +23,8 @@ services:
       - key: DB_HOST
         fromService:
           name: mariadb
+          type: pserv
+          envVarKey: DB_HOST
       - key: DB_PORT
         value: "3306"
       - key: DB_NAME
@@ -32,9 +36,10 @@ services:
 
   - type: pserv
     name: mariadb
-    env: docker
+    env: linux
     plan: free
-    dockerfilePath: ./mariadb.Dockerfile
+    runtime: docker
+    image: mariadb:11
     envVars:
       - key: MARIADB_ROOT_PASSWORD
         value: HardPass@1234
@@ -44,11 +49,10 @@ services:
         value: teste_python
       - key: MARIADB_PASSWORD
         value: teste@1234
-    disk:
-      name: mariadb-data
-      mountPath: /var/lib/mysql
-      sizeGB: 1
 
   - type: redis
     name: redis
     plan: free
+    ipAllowList:
+      - source: fastapi-app
+        description: Permitir acesso da 
