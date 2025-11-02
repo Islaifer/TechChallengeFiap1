@@ -9,12 +9,18 @@ router = APIRouter(prefix="/user", tags=["Users"])
 security_service: SecurityService = get_security_service()
 user_service: UserService = get_user_service()
 
-@router.get("")
+@router.get("", response_model=UserDto, openapi_extra={"security": [{"Auth": []}]})
 @security_service.authorize(target="user")
 async def get_self_user(request: Request, user: UserDto = Depends(get_none)):
+    """
+    Rota que retorna os dados do usuário através do token.
+    """
     return user
 
-@router.put("")
+@router.put("", response_model=UserDto, openapi_extra={"security": [{"Auth": []}]})
 @security_service.authorize(target="user")
 async def update_self_user(request: Request, user_updated: UserDto, user: UserDto = Depends(get_none)):
+    """
+    Rota que atualiza os dados do usuário.
+    """
     return user_service.update_user(user.id, user_updated)

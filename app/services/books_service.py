@@ -1,6 +1,8 @@
 from app.services.redis_service import RedisService
 from app.services.extract import ExtractService
 from datetime import datetime, timedelta
+from app.models.dtos.book_dto import BookDto
+from app.models.dtos.category_dto import CategoryDto
 import asyncio
 
 class BooksService:
@@ -13,23 +15,37 @@ class BooksService:
     async def get_all_books(self):
         asyncio.create_task(self.refresh_extract())
         books = await self.redis_service.get_all("books")
-        return books
+        result = []
+        for book in books:
+            bookDto = BookDto()
+            bookDto.from_json(book)
+            result.append(bookDto)
+        return result
     
     async def get_by_id(self, book_id):
         asyncio.create_task(self.refresh_extract())
         book = await self.redis_service.get_value("books", f"book:{book_id}")
-        return book
+        
+        bookDto = BookDto()
+        bookDto.from_json(book)
+        return bookDto
     
     async def filter_books(self, title: str, category: str):
         asyncio.create_task(self.refresh_extract())
         all_books = await self.get_all_books()
-        result = [book for book in all_books if (title is None or title in book['title']) and (category is None or category in book['category'])]
+        result = [book for book in all_books if (title is None or title in book.title) and (category is None or category in book.category)]
         return result
     
     async def get_all_categories(self):
         asyncio.create_task(self.refresh_extract())
         all_categories = await self.redis_service.get_all("category_list")
-        return all_categories
+        
+        result = []
+        for category_json in all_categories:
+            category = CategoryDto()
+            category.from_json(category_json)
+            result.append(category)
+        return result
     
     
     async def refresh_extract(self):

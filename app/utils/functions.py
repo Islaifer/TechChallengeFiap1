@@ -78,7 +78,7 @@ def html_parser(html_response: str) -> dict:
         preco_float = float(preco_text.replace('£','').replace('Â','').strip())
         disponibilidade = book.find('div', class_='product_price').find('p', class_='instock availability').get_text(strip=True)
         imagem_url = book.find('div', class_='image_container').find('a').find('img', class_='thumbnail')['src']
-        rating = book.find('p')['class'][1]
+        rating = rating_translate(book.find('p')['class'][1])
 
         livro_dict = {
             'id': id_book,
@@ -101,6 +101,15 @@ def text_to_base36_id(text: str) -> str:
         num, i = divmod(num, 36)
         base36 = alphabet[i] + base36
     return base36[:8]
+
+def rating_translate(rating: str) -> str:
+    match rating:
+        case "Five": return "5 estrelas"
+        case "Four": return "4 estrelas"
+        case "Three": return "3 estrelas"
+        case "Two": return "2 estrelas"
+        case "One": return "1 estrelas"
+        case _: return "1 estrela"
 
 def json_text(data: dict) -> str:
     """
