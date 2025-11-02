@@ -1,0 +1,43 @@
+services:
+  mariadb:
+    image: mariadb:11
+    environment:
+      MARIADB_ROOT_PASSWORD: HardPass@1234
+      MARIADB_DATABASE: TESTE_PYTHON
+      MARIADB_USER: teste_python
+      MARIADB_PASSWORD: teste@1234
+    ports:
+      - 3307:3306
+      
+  api:
+    build: .
+    container_name: fastapi_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+      - mariadb
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      DB_TYPE: mariadb
+      DB_USER: teste_python
+      DB_PASS: teste@1234
+      DB_HOST: mariadb
+      DB_PORT: 3306
+      DB_NAME: TESTE_PYTHON
+      DB_CONNECTOR: pymysql
+    volumes:
+      - .:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:

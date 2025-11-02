@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+import hashlib
 
 def page_request(base_url: str) -> str:
     """
@@ -72,6 +73,7 @@ def html_parser(html_response: str) -> dict:
 
     for book in book_article:
         titulo = book.find('h3').find('a')['title']
+        id_book = text_to_base36_id(titulo)
         preco_text = book.find('div', class_='product_price').find('p', class_='price_color').text
         preco_float = float(preco_text.replace('£','').replace('Â','').strip())
         disponibilidade = book.find('div', class_='product_price').find('p', class_='instock availability').get_text(strip=True)
@@ -79,16 +81,26 @@ def html_parser(html_response: str) -> dict:
         rating = book.find('p')['class'][1]
 
         livro_dict = {
-            'titulo': titulo,
-            'preco': preco_float,
-            'disponibilidade': disponibilidade,
-            'imagem_url': imagem_url,
+            'id': id_book,
+            'title': titulo,
+            'price': preco_float,
+            'availability': disponibilidade,
+            'image_url': imagem_url,
             'rating': rating
         }
         
         livros.append(livro_dict)
     
     return livros
+
+def text_to_base36_id(text: str) -> str:
+    num = int(hashlib.sha1(text.encode()).hexdigest(), 16)
+    alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    base36 = ""
+    while num:
+        num, i = divmod(num, 36)
+        base36 = alphabet[i] + base36
+    return base36[:8]
 
 def json_text(data: dict) -> str:
     """
