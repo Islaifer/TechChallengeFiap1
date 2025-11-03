@@ -121,7 +121,7 @@ Response Body:
   "last_updated": "string"
 }
 ```
-Descrição: Essa rota é uma rota protegida que serve para buscar um livro específico na base de dados obtidido pelo scrapping através do id dele.
+Descrição: Essa rota é uma rota protegida que serve para buscar um livro específico na base de dados obtidos pelo scrapping através do id dele.
 
 #### /api/v1/books/search
 Verbo http: GET
@@ -181,8 +181,7 @@ Authorization: Bearer TOKEN
 
 Response Body:
 ```json
-[
-  {
+{
     "total_books": 0,
     "average_price": 0,
     "top_books": [
@@ -197,7 +196,7 @@ Response Body:
         "last_updated": "string"
       }
     ]
-]
+}
 ```
 Descrição: Essa rota é uma rota protegida que serve para fazer um overview geral sobre os dados obtidos pelo scrapping.
 
@@ -214,8 +213,7 @@ Authorization: Bearer TOKEN
 
 Response Body:
 ```json
-[
-  {
+{
     "top_books": [
       {
         "id": "string",
@@ -228,8 +226,7 @@ Response Body:
         "last_updated": "string"
       }
     ]
-  }
-]
+}
 ```
 Descrição: Essa rota é uma rota protegida que serve para buscar os livros com maiores ratings obtidos pelo scrapping.
 
@@ -252,7 +249,7 @@ Descrição: Essa rota é uma rota protegida que serve para buscar o preço méd
 
 ## Funcionamento
 
-Uma imagem geral do fluxo de funcionamento se encontra dentro de /docs aqui no repositório.
+Uma imagem geral do fluxo de funcionamento e uma documentaçao com a lógica mais detalhada se encontram dentro de /docs aqui no repositório.
 
 Esse projeto é feito em FastApi, e toda vez que ele sobe, é feito um scrapping no site https://books.toscrape.com/, buscando todos os dados e os guardando no Redis. Junto com isso, é registrado a data atual, para saber qual foi a última vez que o dado foi atualizado.
 
