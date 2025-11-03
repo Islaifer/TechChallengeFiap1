@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from app.models.dtos.book_dto import BookDto
 from app.models.dtos.category_dto import CategoryDto
 import asyncio
+from app.core.config import setting
 
 class BooksService:
     def __init__(self, redis_service: RedisService, extract_service: ExtractService):
@@ -49,6 +50,8 @@ class BooksService:
     
     
     async def refresh_extract(self):
+        if setting.RUNNING_SCRAPPING:
+            return
         async with self.lock:
             last_update = await self.redis_service.get_last_update()
             if last_update and last_update.get("last_date"):
@@ -62,8 +65,11 @@ class BooksService:
                 from concurrent.futures import ThreadPoolExecutor
                 self.executor = ThreadPoolExecutor(max_workers=2)
 
+            setting.RUNNING_SCRAPPING = True
             data_to_redis, compiled_categories = await loop.run_in_executor(self.executor, self.extract_service.extract_books)
+            setting.RUNNING_SCRAPPING = False
             
             await self.redis_service.save_all(ty='books', mapper=data_to_redis)
             await self.redis_service.save_all(ty='category_list', mapper=compiled_categories)
             await self.redis_service.update_last_date()
+            

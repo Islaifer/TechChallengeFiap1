@@ -13,7 +13,7 @@ security_service = SecurityService(user_repository)
 extract_service = ExtractService(redis_service)
 user_service = UserService(user_repository)
 books_service = BooksService(redis_service, extract_service)
-statistics_service = StatsisticsService(redis_service)
+statistics_service = StatsisticsService(redis_service, extract_service)
 
 def get_security_service():
     return security_service

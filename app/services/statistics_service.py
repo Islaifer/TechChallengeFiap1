@@ -1,15 +1,22 @@
 from app.services.redis_service import RedisService
+from app.services.extract import ExtractService
 import matplotlib.pyplot as plt
 from fastapi.responses import StreamingResponse
+from datetime import datetime, timedelta
+from app.core.config import setting
+import asyncio
 import io
 
 class StatsisticsService:
-    def __init__(self, redis_service: RedisService):
+    def __init__(self, redis_service: RedisService, extract_service: ExtractService):
         self.redis_service = redis_service
+        self.extract_service = extract_service
+        self.lock = asyncio.Lock()
+        self.executor = None
 
     async def count_all_books(self):
         """Retorna o total de livros na fonte de dados."""
-
+        asyncio.create_task(self.refresh_extract())
         books = await self.redis_service.get_all("books")
 
         if books is not None:
@@ -19,7 +26,7 @@ class StatsisticsService:
     
     async def average_price(self):
         """Retorna o preço médio dos livros na fonte de dados."""
-
+        asyncio.create_task(self.refresh_extract())
         books = await self.redis_service.get_all("books")
 
         if books is not None:
@@ -31,7 +38,7 @@ class StatsisticsService:
         
     async def rating_histogram(self):
         """Retorna um histograma de avaliações dos livros na fonte de dados."""
-
+        asyncio.create_task(self.refresh_extract())
         books = await self.redis_service.get_all("books")
 
         if books is not None:
@@ -54,7 +61,7 @@ class StatsisticsService:
     
     async def top_rated_books(self, n=5):
         """Retorna os n livros mais bem avaliados na fonte de dados."""
-
+        asyncio.create_task(self.refresh_extract())
         books = await self.redis_service.get_all("books")
 
         if books is not None:
@@ -66,7 +73,7 @@ class StatsisticsService:
         
     async def avg_price_by_category(self):
         """Retorna o preço médio dos livros por categoria na fonte de dados."""
-
+        asyncio.create_task(self.refresh_extract())
         books = await self.redis_service.get_all("books")
 
         if books is not None:
@@ -91,7 +98,7 @@ class StatsisticsService:
         
     async def book_amount_by_category(self):
         """Retorna a quantidade de livros por categoria na fonte de dados."""
-
+        asyncio.create_task(self.refresh_extract())
         books = await self.redis_service.get_all("books")
 
         if books is not None:
@@ -106,3 +113,27 @@ class StatsisticsService:
                     category_count[category] = 1
             
         return category_count
+    
+    async def refresh_extract(self):
+        if setting.RUNNING_SCRAPPING:
+            return
+        async with self.lock:
+            last_update = await self.redis_service.get_last_update()
+            if last_update and last_update.get("last_date"):
+                last_date = datetime.fromisoformat(last_update["last_date"])
+                now = datetime.now()
+                if now - last_date < timedelta(hours=1):
+                    return
+
+            loop = asyncio.get_running_loop()
+            if self.executor is None:
+                from concurrent.futures import ThreadPoolExecutor
+                self.executor = ThreadPoolExecutor(max_workers=2)
+            
+            setting.RUNNING_SCRAPPING = True
+            data_to_redis, compiled_categories = await loop.run_in_executor(self.executor, self.extract_service.extract_books)
+            setting.RUNNING_SCRAPPING = False
+            
+            await self.redis_service.save_all(ty='books', mapper=data_to_redis)
+            await self.redis_service.save_all(ty='category_list', mapper=compiled_categories)
+            await self.redis_service.update_last_date()
