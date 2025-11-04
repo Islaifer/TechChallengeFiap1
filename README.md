@@ -14,6 +14,9 @@ O objetivo do projeto é fazer um web scrapping do site https://books.toscrape.c
 ## Link do vídeo descritivo
 https://www.dropbox.com/scl/fi/zwp1x6pdyaw8e0ki6d8nf/tech-challenge1-video.mp4?rlkey=qwqqzdwdqgp2htaiofesswxkc&st=eyepfnj8&dl=0
 
+## Diagrama do projeto
+caminho /docs
+
 ## Como usar
 A API estará disponível no host https://techchallengefiap1-production.up.railway.app
 Para usar, basta criar uma conta com o endpoint de registro, fazer login com os dados registrados, e por fim, utilizar os endpoints de serviço passando o token jwt no header como Authorization Bearer.
