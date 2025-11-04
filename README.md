@@ -11,6 +11,9 @@ Este projeto representa o Tech Challenge 1 da FIAP para o curso de Machine Learn
 
 O objetivo do projeto é fazer um web scrapping do site https://books.toscrape.com/, que é um site que disponibiliza dados para prática de web scrapping. Após o scrapping, disponibilizar endpoints para disponibilizar os dados coletados.
 
+## Link do vídeo descritivo
+https://www.dropbox.com/scl/fi/zwp1x6pdyaw8e0ki6d8nf/tech-challenge1-video.mp4?rlkey=qwqqzdwdqgp2htaiofesswxkc&st=eyepfnj8&dl=0
+
 ## Como usar
 A API estará disponível no host https://techchallengefiap1-production.up.railway.app
 Para usar, basta criar uma conta com o endpoint de registro, fazer login com os dados registrados, e por fim, utilizar os endpoints de serviço passando o token jwt no header como Authorization Bearer.
